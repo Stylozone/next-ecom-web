@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.83.0",
+    "axios": "^1.11.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.532.0",
@@ -32,6 +33,7 @@
     "@next/eslint-plugin-next": "^15.4.4",
     "@phaicom/eslint-config": "^0.4.2",
     "@tailwindcss/postcss": "^4.1.11",
+    "@tanstack/eslint-plugin-query": "^5.81.2",
     "@types/node": "^22.16.5",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",

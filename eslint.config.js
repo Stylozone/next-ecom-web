@@ -1,4 +1,5 @@
 import configs from '@phaicom/eslint-config'
+import pluginQuery from '@tanstack/eslint-plugin-query'
 
 export default
 configs(
@@ -11,4 +12,5 @@ configs(
       css: true,
     },
   },
+  ...pluginQuery.configs['flat/recommended'],
 )
