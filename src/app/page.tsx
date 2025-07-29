@@ -1,14 +1,20 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useState } from 'react'
+import { Pagination } from '@/components/pagination'
+import { ProductCard } from '@/components/product/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useProducts } from '@/hooks/useProducts'
 
 export default function HomePage() {
-  const page = 1
+  const [page, setPage] = useState(1)
   const limit = 6
   const offset = (page - 1) * limit
-  const { data: products, isLoading, isError } = useProducts(limit, offset)
+
+  const { data: products, isLoading, isError, isFetching } = useProducts(limit, offset)
+
+  const totalCount = products?.total || 0
+  const totalPages = Math.ceil(totalCount / limit)
 
   if (isLoading) {
     return (
@@ -17,8 +23,8 @@ export default function HomePage() {
         md:grid-cols-3
       `}
       >
-        {[...Array.from({ length: limit })].map((_, i) => (
-          <Skeleton key={i} className="h-40 w-full rounded-xl" />
+        {Array.from({ length: 6 }).map((_, i) => (
+          <Skeleton key={i} className="h-60 w-full rounded-xl" />
         ))}
       </div>
     )
@@ -29,32 +35,23 @@ export default function HomePage() {
   }
 
   return (
-    <div className={`
-      grid grid-cols-1 gap-4 p-4
-      md:grid-cols-3
-    `}
-    >
-      {products?.items?.map((product) => (
-        <Card key={product.id}>
-          <CardHeader>
-            <CardTitle>{product.name}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <img
-              src={product.image_url.Valid ? product.image_url.String : ''}
-              alt={product.name}
-              className="mb-2 h-40 w-full rounded-lg object-cover"
-            />
-            <p className="text-muted-foreground mb-2 text-sm">
-              {product.description.Valid ? product.description.String : ''}
-            </p>
-            <p className="font-semibold">
-              ฿
-              {(product.price / 100).toFixed(2)}
-            </p>
-          </CardContent>
-        </Card>
-      ))}
+    <div className="space-y-6 p-4">
+      <div className={`
+        grid grid-cols-1 gap-4
+        md:grid-cols-3
+      `}
+      >
+        {products?.items?.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        isFetching={isFetching}
+        onChange={setPage}
+      />
     </div>
   )
 }
